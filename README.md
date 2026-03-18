@@ -16,7 +16,7 @@ Chào mừng bạn đến với **WeatherVN**, một hệ thống ứng dụng T
 
 ### 1. Yêu cầu hệ thống
 *   **Python**: 3.9 trở lên.
-*   **Database**: PostgreSQL (Tên database: `weather_project`).
+*   **Database**: SQLite (Tự động khởi tạo, không cần cài đặt thêm).
 *   **Cấu hình**: CPU mạnh hoặc GPU (NVIDIA Cuda) để huấn luyện mô hình nhanh hơn.
 
 ### 2. Cài đặt môi trường
@@ -34,9 +34,9 @@ pip install -r requirements.txt
 ```
 
 ### 3. Cấu hình Database
-Đảm bảo bạn đã cài đặt PostgreSQL và tạo một database tên là `weather_project`. 
-- Mặc định hệ thống dùng user `postgres` và mật khẩu `123456`.
-- Bạn có thể thay đổi mật khẩu bằng cách đặt biến môi trường: `set DB_PASSWORD=your_password`.
+Hệ thống sử dụng **SQLite** làm cơ sở dữ liệu mặc định để đơn giản hóa việc cài đặt.
+- Tập tin database (`weather_project.db`) sẽ được **tự động tạo** trong thư mục gốc khi bạn khởi chạy ứng dụng lần đầu tiên.
+- Bạn không cần cấu hình User/Password hay cài đặt server database rời.
 
 ---
 
