@@ -1,0 +1,47 @@
+# --- CORE WEB ---
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+Jinja2
+MarkupSafe
+Werkzeug
+itsdangerous
+click
+blinker
+greenlet
+
+# --- DATA & ML (THE REAL DIFFICULTIES ON 3.14) ---
+numpy
+pandas
+scipy
+scikit-learn
+joblib
+xgboost
+matplotlib
+python-dateutil
+pytz
+tzdata
+
+# --- DATA PIPELINE ---
+requests
+urllib3
+idna
+charset-normalizer
+certifi
+xarray
+cfgrib
+eccodes
+
+# --- OTHER ---
+fastapi
+uvicorn
+pydantic
+cffi
+cryptography
+pycryptodome
+pyodbc
+typing_extensions
+rsa
+pyasn1
+ecdsa
+colorama

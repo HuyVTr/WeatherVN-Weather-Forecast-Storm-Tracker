@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+ENV/
+.env
+.venv
+
+# Project specific
+project_data/
+
+# Old services
+services/realtime_weather_old/
+*.txt
+!requirements.txt
+
+# 1. Bỏ qua file dữ liệu huấn luyện vì quá nặng (>200MB)
+FINAL_TRAINING_DATASET_ENHANCED.csv
+
+# 2. Bỏ qua toàn bộ file kết quả dự báo sinh ra (để repo sạch sẽ)
+project_data/processed_output/*.csv
+
+# 3. Đảm bảo GIỮ LẠI file mô phỏng bão Rai (vì nó nhẹ và cần để chạy mục 5)
+!services/storm_prediction_service/simulation_data/actual_path.csv
+.serena/memories/suggested_commands.md
+.serena/memories/completion_checklist.md
+.serena/memories/style_and_conventions.md
+.serena/memories/project_overview.md
