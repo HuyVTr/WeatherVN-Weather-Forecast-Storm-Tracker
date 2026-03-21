@@ -1,48 +1,56 @@
 <!-- backend_api/templates/widgets/header.html -->
 <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4 px-4 md:px-8">
     <div class="max-w-7xl mx-auto">
-        <nav id="nav-container" class="bg-white/70 dark:bg-slate-900/40 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-[2rem] shadow-2xl transition-all duration-500 px-6 py-3 flex justify-between items-center group/nav">
-            
-            <!-- Logo Area -->
-            <a href="{{ url_for('main_bp.route_home') }}" class="flex items-center gap-3 group/logo relative">
-                <div class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/20 group-hover/logo:scale-110 group-hover/logo:rotate-3 transition-all duration-500">
-                    <i data-lucide="cloud-sun" class="w-6 h-6 text-white animate-pulse"></i>
-                    <div class="absolute inset-0 bg-white/20 rounded-2xl blur-sm opacity-0 group-hover/logo:opacity-100 transition-opacity"></div>
+        <div id="nav-container" class="bg-slate-900/60 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/10 dark:border-white/5 rounded-[2.5rem] p-3 md:p-4 px-6 md:px-8 shadow-2xl transition-all duration-500 flex items-center justify-between">
+        
+        <!-- Logo Area -->
+        <a href="/" class="flex items-center gap-3 group">
+            <div class="relative">
+                <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
+                <div class="relative p-2.5 bg-slate-800 rounded-2xl border border-white/10 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-500">
+                    <i data-lucide="cloud-sun" class="w-6 h-6 text-blue-400"></i>
                 </div>
-                <div class="flex flex-col">
-                    <span class="text-xl font-black text-gray-800 dark:text-white tracking-tighter leading-none italic">
-                        Weather<span class="text-blue-600 dark:text-blue-400">VN</span>
-                    </span>
-                    <span class="text-[9px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-gray-500 leading-none mt-1">AI Forecast</span>
-                </div>
-            </a>
-
-            <!-- Desktop Navigation -->
-            <div class="hidden lg:flex items-center bg-gray-100/50 dark:bg-white/5 p-1 rounded-2xl border border-gray-200/50 dark:border-white/5">
-                <a href="{{ url_for('main_bp.route_home') }}" class="nav-link {% if nav_active == 'home' %}active{% endif %}">
-                    <i data-lucide="home" class="w-4 h-4 mr-2"></i> Trang chủ
-                </a>
-                <a href="{{ url_for('forecast_bp.forecast_page') }}" class="nav-link {% if nav_active == 'forecast' %}active{% endif %}">
-                    <i data-lucide="cloud-rain" class="w-4 h-4 mr-2"></i> Dự báo
-                </a>
-                <a href="{{ url_for('main_bp.route_weather_map') }}" class="nav-link {% if nav_active == 'weather_map' %}active{% endif %}">
-                    <i data-lucide="map" class="w-4 h-4 mr-2"></i> Bản đồ
-                </a>
-                <a href="{{ url_for('chart_bp.route_chart') }}" class="nav-link {% if nav_active == 'chart' %}active{% endif %}">
-                    <i data-lucide="line-chart" class="w-4 h-4 mr-2"></i> Biểu đồ
-                </a>
-                <a href="{{ url_for('main_bp.route_news') }}" class="nav-link {% if nav_active == 'news' %}active{% endif %}">
-                    <i data-lucide="newspaper" class="w-4 h-4 mr-2"></i> Tin tức
-                </a>
             </div>
+            <div class="flex flex-col">
+                <span class="text-xl md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200 tracking-tight leading-none mb-0.5">
+                    WeatherVN
+                </span>
+                <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-blue-400/80 leading-none">
+                    AI Forecast
+                </span>
+            </div>
+        </a>
 
-            <!-- Action Buttons -->
-            <div class="flex items-center gap-3">
-                <!-- Location Info (Mockup) -->
-                <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-600 dark:text-blue-400">
-                    <i data-lucide="map-pin" class="w-4 h-4"></i>
-                    <span class="text-xs font-black uppercase tracking-wider">Việt Nam</span>
-                </div>
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <a href="/" class="{% if nav_active == 'home' %}bg-white/10 text-white shadow-lg{% else %}text-slate-300 hover:text-white hover:bg-white/5{% endif %} px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group">
+                <i data-lucide="home" class="w-4 h-4 transition-transform group-hover:scale-110"></i>
+                <span>TRANG CHỦ</span>
+            </a>
+            <a href="/forecast" class="{% if nav_active == 'forecast' %}bg-white/10 text-white shadow-lg{% else %}text-slate-300 hover:text-white hover:bg-white/5{% endif %} px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group">
+                <i data-lucide="cloud-rain" class="w-4 h-4 transition-transform group-hover:scale-110"></i>
+                <span>DỰ BÁO</span>
+            </a>
+            <a href="/weather-map" class="{% if nav_active == 'weather_map' %}bg-white/10 text-white shadow-lg{% else %}text-slate-300 hover:text-white hover:bg-white/5{% endif %} px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group">
+                <i data-lucide="map" class="w-4 h-4 transition-transform group-hover:scale-105"></i>
+                <span>BẢN ĐỒ</span>
+            </a>
+            <a href="/chart" class="{% if nav_active == 'chart' %}bg-white/10 text-white shadow-lg{% else %}text-slate-300 hover:text-white hover:bg-white/5{% endif %} px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group">
+                <i data-lucide="line-chart" class="w-4 h-4 transition-transform group-hover:scale-110"></i>
+                <span>BIỂU ĐỒ</span>
+            </a>
+            <a href="/news" class="{% if nav_active == 'news' %}bg-white/10 text-white shadow-lg{% else %}text-slate-300 hover:text-white hover:bg-white/5{% endif %} px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group">
+                <i data-lucide="newspaper" class="w-4 h-4 transition-transform group-hover:scale-110"></i>
+                <span>TIN TỨC</span>
+            </a>
+        </nav>
+
+        <!-- Right Side Actions -->
+        <div class="flex items-center gap-3">
+            <div class="hidden md:flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-slate-300">
+                <i data-lucide="map-pin" class="w-4 h-4 text-blue-400"></i>
+                <span>VIỆT NAM</span>
+            </div>
 
                 <!-- Mobile Menu Toggle -->
                 <button id="menu-toggle" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-all active:scale-90" aria-label="Menu">
