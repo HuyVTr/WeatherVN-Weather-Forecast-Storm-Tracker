@@ -29,7 +29,7 @@
                     <i data-lucide="search" class="h-6 w-6 text-gray-400 group-focus-within:text-blue-500 transition-colors"></i>
                 </div>
                 <input type="text" id="province-search" list="province-list" 
-                    class="block w-full pl-12 pr-4 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 text-lg text-white transition-all outline-none"
+                    class="block w-full pl-12 pr-4 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 text-lg text-gray-800 dark:text-white transition-all outline-none"
                     placeholder="Nhập tên tỉnh/thành phố..." autocomplete="off">
                 <datalist id="province-list">
                     </datalist>
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div class="flex-1 w-full max-w-md relative animate-fade-in-up" style="animation-delay: 0.2s;">
+        <div class="flex-1 w-full max-w-md relative animate-fade-in-up delay-200">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-300 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
             <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-300 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>
 
@@ -104,7 +104,7 @@
     <div class="mb-12">
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Thành phố lớn</h2>
-            <a href="#" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">Xem tất cả</a>
+            <a href="{{ url_for('forecast_bp.forecast_page') }}" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">Xem tất cả</a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="city-grid">
             {% for i in range(4) %}
@@ -130,6 +130,7 @@
     }
     .animate-blob { animation: blob 7s infinite; }
     .animation-delay-2000 { animation-delay: 2s; }
+    .delay-200 { animation-delay: 0.2s; }
 </style>
 {% endblock %}
 

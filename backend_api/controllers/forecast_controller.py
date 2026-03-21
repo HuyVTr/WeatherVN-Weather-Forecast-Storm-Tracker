@@ -44,25 +44,24 @@ def route_forecast():
 
 @forecast_bp.route('/api/provinces')
 def api_get_provinces():
-    """API lấy danh sách 63 tỉnh (mocked data)."""
-    # Dữ liệu tỉnh được hardcode vì không có DB
-    provinces_data = [
-        {'province_id': 1, 'name': 'Hà Nội', 'latitude': 21.0285, 'longitude': 105.8542},
-        {'province_id': 2, 'name': 'TP. Hồ Chí Minh', 'latitude': 10.8231, 'longitude': 106.6297},
-        {'province_id': 3, 'name': 'Đà Nẵng', 'latitude': 16.0544, 'longitude': 108.2022},
-        {'province_id': 4, 'name': 'Hải Phòng', 'latitude': 20.8449, 'longitude': 106.6881},
-        {'province_id': 5, 'name': 'Cần Thơ', 'latitude': 10.0452, 'longitude': 105.7468},
-        {'province_id': 6, 'name': 'Huế', 'latitude': 16.4637, 'longitude': 107.5909},
-        {'province_id': 7, 'name': 'Nha Trang', 'latitude': 12.2388, 'longitude': 109.1967},
-        {'province_id': 8, 'name': 'Vũng Tàu', 'latitude': 10.3458, 'longitude': 107.0805},
-        {'province_id': 9, 'name': 'Lào Cai', 'latitude': 22.4965, 'longitude': 103.9635},
-        {'province_id': 10, 'name': 'Quảng Ninh', 'latitude': 21.0180, 'longitude': 107.2245},
-    ]
-    
-    # Sắp xếp theo tên tỉnh
-    provinces_data_sorted = sorted(provinces_data, key=lambda p: p['name'])
-    
-    return jsonify(provinces_data_sorted)
+    """API lấy danh sách 63 tỉnh từ database."""
+    try:
+        provinces = Provinces.query.all()
+        provinces_data = []
+        for p in provinces:
+            provinces_data.append({
+                'province_id': p.province_id,
+                'name': p.name,
+                'latitude': p.latitude,
+                'longitude': p.longitude
+            })
+        
+        # Sắp xếp theo tên tỉnh
+        provinces_data_sorted = sorted(provinces_data, key=lambda p: p['name'])
+        return jsonify(provinces_data_sorted)
+    except Exception as e:
+        print(f"Lỗi khi lấy danh sách tỉnh: {e}")
+        return jsonify([])
 
 def merge_api_and_ml_data(api_data, ml_data, province_name):
     """
@@ -90,12 +89,15 @@ def merge_api_and_ml_data(api_data, ml_data, province_name):
             'time': [],
             'temperature_2m': [],
             'relative_humidity_2m': [],
+            'dew_point_2m': [],
             'precipitation': [],
             'rain': [],
             'showers': [],
             'weather_code': [],
             'pressure_msl': [],
+            'cloud_cover': [],
             'wind_speed_10m': [],
+            'wind_gusts_10m': [],
             'wind_direction_10m': [],
             'visibility': [],
             'uv_index': []
@@ -149,12 +151,15 @@ def merge_api_and_ml_data(api_data, ml_data, province_name):
 
                 hourly_dict['temperature_2m'].append(get_val('temperature_2m'))
                 hourly_dict['relative_humidity_2m'].append(get_val('relative_humidity_2m'))
+                hourly_dict['dew_point_2m'].append(get_val('dew_point_2m'))
                 hourly_dict['precipitation'].append(get_val('precipitation'))
                 hourly_dict['rain'].append(get_val('rain'))
                 hourly_dict['showers'].append(get_val('showers'))
                 hourly_dict['weather_code'].append(get_val('weather_code'))
                 hourly_dict['pressure_msl'].append(get_val('pressure_msl'))
+                hourly_dict['cloud_cover'].append(get_val('cloud_cover'))
                 hourly_dict['wind_speed_10m'].append(get_val('wind_speed_10m'))
+                hourly_dict['wind_gusts_10m'].append(get_val('wind_gusts_10m'))
                 hourly_dict['wind_direction_10m'].append(get_val('wind_direction_10m'))
                 hourly_dict['visibility'].append(get_val('visibility'))
                 hourly_dict['uv_index'].append(get_val('uv_index'))
@@ -162,12 +167,15 @@ def merge_api_and_ml_data(api_data, ml_data, province_name):
                 ml_hour = time_info['data']
                 hourly_dict['temperature_2m'].append(ml_hour.get('temperature_2m', 0))
                 hourly_dict['relative_humidity_2m'].append(ml_hour.get('relative_humidity_2m', 0))
+                hourly_dict['dew_point_2m'].append(ml_hour.get('dew_point_2m', 0))
                 hourly_dict['precipitation'].append(ml_hour.get('precipitation', 0))
                 hourly_dict['rain'].append(ml_hour.get('precipitation', 0)) # ML gộp rain
                 hourly_dict['showers'].append(0)
                 hourly_dict['weather_code'].append(ml_hour.get('weather_code', 0))
                 hourly_dict['pressure_msl'].append(ml_hour.get('pressure_msl', 0))
+                hourly_dict['cloud_cover'].append(0)
                 hourly_dict['wind_speed_10m'].append(ml_hour.get('wind_speed_10m', 0))
+                hourly_dict['wind_gusts_10m'].append(0)
                 hourly_dict['wind_direction_10m'].append(0)
                 hourly_dict['visibility'].append(ml_hour.get('visibility', 0))
                 hourly_dict['uv_index'].append(ml_hour.get('uv_index', 0))
@@ -235,32 +243,28 @@ def api_get_forecast():
         return jsonify({"error": "Thiếu province"}), 400
 
     try:
-        # Tìm tỉnh từ danh sách hardcode
-        provinces_data = [
-            {'province_id': 1, 'name': 'Hà Nội', 'latitude': 21.0285, 'longitude': 105.8542},
-            {'province_id': 2, 'name': 'TP. Hồ Chí Minh', 'latitude': 10.8231, 'longitude': 106.6297},
-            {'province_id': 3, 'name': 'Đà Nẵng', 'latitude': 16.0544, 'longitude': 108.2022},
-            {'province_id': 4, 'name': 'Hải Phòng', 'latitude': 20.8449, 'longitude': 106.6881},
-            {'province_id': 5, 'name': 'Cần Thơ', 'latitude': 10.0452, 'longitude': 105.7468},
-            {'province_id': 6, 'name': 'Huế', 'latitude': 16.4637, 'longitude': 107.5909},
-            {'province_id': 7, 'name': 'Nha Trang', 'latitude': 12.2388, 'longitude': 109.1967},
-            {'province_id': 8, 'name': 'Vũng Tàu', 'latitude': 10.3458, 'longitude': 107.0805},
-            {'province_id': 9, 'name': 'Lào Cai', 'latitude': 22.4965, 'longitude': 103.9635},
-            {'province_id': 10, 'name': 'Quảng Ninh', 'latitude': 21.0180, 'longitude': 107.2245},
-        ]
+        # Lấy thông tin tỉnh từ Database
+        province = Provinces.query.filter_by(name=province_name).first()
         
-        province = next((p for p in provinces_data if p['name'] == province_name), None)
         if not province:
-            return jsonify({"error": "Không tìm thấy tỉnh"}), 404
+            return jsonify({"error": f"Không tìm thấy tỉnh: {province_name}"}), 404
 
+        # Chuyển thành dict để dùng trong logic phía dưới
+        province_info = {
+            'province_id': province.province_id,
+            'name': province.name,
+            'latitude': province.latitude,
+            'longitude': province.longitude
+        }
+        province = province_info # Giữ name variable này cho codeset bên dưới
         # 1. Gọi Open-Meteo API
         url = "https://api.open-meteo.com/v1/forecast"
         params = {
             "latitude": province['latitude'],
             "longitude": province['longitude'],
-            "hourly": "temperature_2m,relative_humidity_2m,precipitation,rain,showers,weather_code,pressure_msl,wind_speed_10m,wind_direction_10m,visibility,uv_index",
-            "daily": "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,sunrise,sunset",
-            "current": "temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m,pressure_msl,visibility,uv_index,weather_code",
+            "hourly": "temperature_2m,relative_humidity_2m,dew_point_2m,precipitation,rain,showers,weather_code,pressure_msl,cloud_cover,wind_speed_10m,wind_gusts_10m,wind_direction_10m,visibility,uv_index",
+            "daily": "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,sunrise,sunset",
+            "current": "temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation,cloud_cover,wind_speed_10m,wind_gusts_10m,pressure_msl,visibility,uv_index,weather_code",
             "timezone": "Asia/Bangkok",
             "forecast_days": min(days, 16)
         }

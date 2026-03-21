@@ -5,7 +5,7 @@
                 <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-3.71 0-6.73 2.7-7.29 6.29C2.47 10.61 0 13.1 0 16c0 3.31 2.69 6 6 6h13c3.87 0 7-3.13 7-7 0-3.61-2.73-6.56-6.65-6.96zM12 20c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fill="url(#weather-gradient)"/>
                 <defs>
                     <linearGradient id="weather-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:rgb(253, 230, 138);stop-opacity:1" /> <stop offset="100%" style="stop-color:rgb(255, 255, 255);stop-opacity:1" /> </linearGradient>
+                        <stop offset="0%" stop-color="rgb(253, 230, 138)" stop-opacity="1" /> <stop offset="100%" stop-color="rgb(255, 255, 255)" stop-opacity="1" /> </linearGradient>
                 </defs>
             </svg>
             <span class="relative">
@@ -16,7 +16,7 @@
 
         <div class="hidden lg:flex space-x-10 text-white font-semibold">
             <a href="{{ url_for('main_bp.route_home') }}" class="nav-item">Trang chủ</a>
-            <a href="#" class="nav-item">Dự báo thời tiết</a>
+            <a href="{{ url_for('forecast_bp.forecast_page') }}" class="nav-item">Dự báo thời tiết</a>
             
             <a href="{{ url_for('main_bp.route_weather_map') }}" class="nav-item">Bản đồ thời tiết</a>
             
@@ -25,20 +25,20 @@
             <a href="{{ url_for('main_bp.route_news') }}" class="nav-item">Tin tức</a>
         </div>
 
-        <button id="menu-toggle" class="lg:hidden p-2 rounded-full text-white hover:bg-white/20 transition-colors duration-300 focus:outline-none">
+        <button id="menu-toggle" class="lg:hidden p-2 rounded-full text-white hover:bg-white/20 transition-colors duration-300 focus:outline-none" aria-label="Toggle menu" title="Mở menu">
             <svg id="menu-icon-open" class="w-7 h-7 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
             </svg>
             <svg id="menu-icon-close" class="w-7 h-7 absolute transition-opacity duration-300 opacity-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
-        </button>
+        </>
     </nav>
 
     <div id="mobile-menu" class="lg:hidden h-0 overflow-hidden transition-all duration-500 ease-in-out bg-gray-800/95 backdrop-blur-sm">
         <div class="container mx-auto px-4 py-4 space-y-2">
             <a href="{{ url_for('main_bp.route_home') }}" class="mobile-nav-item">Trang chủ</a>
-            <a href="#" class="nav-item">Dự báo thời tiết</a>
+            <a href="{{ url_for('forecast_bp.forecast_page') }}" class="nav-item">Dự báo thời tiết</a>
             
             <a href="{{ url_for('main_bp.route_weather_map') }}" class="mobile-nav-item">Bản đồ thời tiết</a>
 

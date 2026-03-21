@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="icon" href="{{ url_for('static', filename='images/icons.png') }}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .chart-container { height: 300px; position: relative; }
+    </style>
 </head>
 <body class="font-sans antialiased text-gray-800 bg-gradient-to-br from-blue-200 via-blue-100 to-blue-50 min-h-screen">
     {% include 'widgets/header.html' %}

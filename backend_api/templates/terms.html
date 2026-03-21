@@ -1,41 +1,98 @@
 {% extends "layout.html" %}
-{% block title %}Điều khoản sử dụng - WeatherVN{% endblock %}
+{% block title %}Điều khoản sử dụng - WeatherVN AI{% endblock %}
 
 {% block content %}
-<section class="bg-gray-100 min-h-screen py-8">
-    <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md border border-gray-200 p-8 md:p-12">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">Điều khoản sử dụng</h1>
-            
-            <div class="space-y-6 text-gray-700 leading-relaxed">
-                <p class="italic text-gray-500">
-                    Website WeatherVN là sản phẩm thuộc Đồ án Chuyên ngành Công nghệ Thông tin - HUTECH. Việc sử dụng website đồng nghĩa với việc bạn đồng ý các điều khoản sau:
-                </p>
-                
-                <div>
-                    <h2 class="text-xl font-bold text-blue-700 mb-2">1. Mục đích sử dụng</h2>
-                    <p>Hệ thống được xây dựng với mục đích học tập, nghiên cứu khoa học về ứng dụng thuật toán XGBoost trong dự báo thời tiết[cite: 163]. Dữ liệu trên website phục vụ cho mục đích tham khảo.</p>
-                </div>
-
-                <div>
-                    <h2 class="text-xl font-bold text-blue-700 mb-2">2. Miễn trừ trách nhiệm (Quan trọng)</h2>
-                    <p>
-                        Mặc dù chúng tôi sử dụng các mô hình AI tiên tiến và nguồn dữ liệu từ OpenWeatherMap[cite: 150], nhưng dự báo thời tiết và <strong>dự báo bão trên Biển Đông</strong> luôn có sai số nhất định. 
-                        <br>Chúng tôi <strong>không chịu trách nhiệm</strong> pháp lý cho bất kỳ thiệt hại nào về người và tài sản do việc dựa hoàn toàn vào thông tin từ website này để đưa ra quyết định (như đi biển, trồng trọt quy mô lớn, hàng không...). Vui lòng tham khảo thêm các kênh chính thống của Nhà nước khi có thiên tai nguy hiểm.
-                    </p>
-                </div>
-
-                <div>
-                    <h2 class="text-xl font-bold text-blue-700 mb-2">3. Quyền sở hữu trí tuệ</h2>
-                    <p>Mã nguồn, thuật toán dự báo và báo cáo đồ án thuộc quyền sở hữu của nhóm sinh viên thực hiện và trường Đại học Công nghệ TP.HCM (HUTECH)[cite: 1, 24].</p>
-                </div>
-
-                <div>
-                    <h2 class="text-xl font-bold text-blue-700 mb-2">4. Hành vi người dùng</h2>
-                    <p>Nghiêm cấm các hành vi tấn công hệ thống, spam phản hồi hoặc sử dụng dữ liệu từ website cho các mục đích thương mại mà không có sự đồng ý của nhóm tác giả.</p>
-                </div>
-            </div>
-        </div>
+<main class="flex-1 relative p-6 pb-20 overflow-hidden">
+    <!-- Atmospheric Background -->
+    <div class="fixed inset-0 -z-10 h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-blue-950 dark:to-slate-950">
+        <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-500/10 blur-[150px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[150px] animate-pulse delay-700"></div>
     </div>
-</section>
+
+    <div class="max-w-4xl mx-auto space-y-12 animate-fade-in-up">
+        
+        <!-- Header -->
+        <header class="text-center space-y-6">
+            <div class="inline-flex items-center gap-3 px-6 py-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-widest">
+                <i data-lucide="file-text" class="w-4 h-4"></i> Phiên bản v1.0.2 - 2026
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black text-gray-800 dark:text-white tracking-tighter italic">
+                Terms <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Of Use</span>
+            </h1>
+            <p class="text-gray-500 dark:text-slate-400 font-bold uppercase tracking-widest text-xs">Các điều khoản ràng buộc khi sử dụng dịch vụ WeatherVN AI</p>
+        </header>
+
+        <!-- Main Content Glass Card -->
+        <section class="bg-white/60 dark:bg-slate-900/80 backdrop-blur-3xl p-10 md:p-14 rounded-[3rem] border border-white/60 dark:border-white/5 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <article class="relative z-10 prose prose-slate dark:prose-invert max-w-none space-y-12 text-sm leading-relaxed font-medium">
+                
+                <section class="space-y-4">
+                    <h2 class="text-xl font-black text-gray-800 dark:text-white tracking-tight flex items-center gap-3 mb-6">
+                        <i data-lucide="smile" class="w-6 h-6 text-indigo-500"></i> 1. Chấp nhận các điều khoản
+                    </h2>
+                    <p class="text-gray-600 dark:text-slate-400">
+                        Bằng việc truy cập và sử dụng trang web WeatherVN, bạn đồng ý tuân thủ các điều khoản và điều kiện được nêu tại đây. Nếu bạn không đồng ý với bất kỳ phần nào của các điều khoản này, vui lòng ngừng sử dụng trang web ngay lập tức.
+                    </p>
+                </section>
+
+                <section class="space-y-6">
+                    <h2 class="text-xl font-black text-gray-800 dark:text-white tracking-tight flex items-center gap-3 mb-6">
+                        <i data-lucide="copyright" class="w-6 h-6 text-blue-500"></i> 2. Quyền sở hữu trí tuệ
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-6 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl group transition-all hover:bg-white dark:hover:bg-white/10">
+                            <i data-lucide="brain-circuit" class="w-5 h-5 text-blue-600 mb-3"></i>
+                            <h4 class="font-black text-xs uppercase tracking-widest mb-2">Dữ liệu AI</h4>
+                            <p class="text-[11px] text-gray-400 font-bold opacity-80">Mọi thuật toán dự báo và mô hình AI được phát triển bởi nhóm thực hiện Đồ án tại HUTECH đều thuộc quyền sở hữu trí tuệ của nhóm.</p>
+                        </div>
+                        <div class="p-6 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl group transition-all hover:bg-white dark:hover:bg-white/10">
+                            <i data-lucide="code" class="w-5 h-5 text-indigo-600 mb-3"></i>
+                            <h4 class="font-black text-xs uppercase tracking-widest mb-2">Mã nguồn & Giao diện</h4>
+                            <p class="text-[11px] text-gray-400 font-bold opacity-80">Toàn bộ mã nguồn, thiết kế đồ họa và nội dung được cung cấp trên trang web đều được bảo vệ bởi luật sở hữu trí tuệ Việt Nam.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="space-y-4">
+                    <h2 class="text-xl font-black text-gray-800 dark:text-white tracking-tight flex items-center gap-3 mb-6">
+                        <i data-lucide="shield-alert" class="w-6 h-6 text-red-500"></i> 3. Giới hạn trách nhiệm
+                    </h2>
+                    <div class="p-8 bg-red-500/10 border-l-4 border-red-500 rounded-3xl space-y-4">
+                        <p class="text-gray-700 dark:text-red-200 font-black italic">
+                            Dự báo thời tiết là một ngành khoa học dựa trên xác suất và mô hình toán học.
+                        </p>
+                        <p class="text-gray-600 dark:text-red-300 opacity-80">
+                            WeatherVN AI không chịu trách nhiệm cho bất kỳ tổn thất, thiệt hại nào phát sinh do việc tin tưởng tuyệt đối vào các thông tin dự báo trên trang web. Người dùng được khuyến cáo luôn đối chiếu với các thông tin chính thống từ các cơ quan khí tượng thủy văn quốc gia trong các trường hợp thiên tai nguy hiểm.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="space-y-4">
+                    <h2 class="text-xl font-black text-gray-800 dark:text-white tracking-tight flex items-center gap-3 mb-6">
+                        <i data-lucide="refresh-cw" class="w-6 h-6 text-green-500"></i> 4. Thay đổi nội dung
+                    </h2>
+                    <p class="text-gray-600 dark:text-slate-400">
+                        Chúng tôi có quyền thay đổi, sửa đổi, thêm hoặc xóa bỏ các phần của các điều khoản này bất cứ lúc nào mà không cần thông báo trước. Các thay đổi sẽ có hiệu lực ngay khi được đăng tải trên trang web.
+                    </p>
+                </section>
+
+                <div class="pt-10 border-t border-gray-200 dark:border-white/10 flex flex-col md:flex-row gap-6 items-center justify-between opacity-80">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white">
+                            <i data-lucide="check" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-xs font-black uppercase text-gray-400 tracking-[0.2em]">Tận hưởng dịch vụ WeatherVN AI</span>
+                    </div>
+                    
+                    <button onclick="window.history.back()" class="flex items-center gap-2 text-xs font-black text-indigo-600 uppercase tracking-widest hover:underline group">
+                        <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i> Trở lại
+                    </button>
+                </div>
+
+            </article>
+        </section>
+    </div>
+</main>
 {% endblock %}

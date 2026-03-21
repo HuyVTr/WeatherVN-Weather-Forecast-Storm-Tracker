@@ -21,7 +21,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <div class="lg:col-span-2 space-y-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+        <div class="lg:col-span-2 space-y-8 animate-fade-in-up delay-200">
             
             <div id="featured-news" class="relative group cursor-pointer">
                 <div class="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border border-white/60 dark:border-gray-600/60 rounded-[2rem] p-8 shadow-2xl h-96 flex items-center justify-center">
@@ -34,7 +34,7 @@
             
         </div>
         
-        <div class="lg:col-span-1 space-y-8 animate-fade-in-up" style="animation-delay: 0.4s;">
+        <div class="lg:col-span-1 space-y-8 animate-fade-in-up delay-400">
             
             <div id="calendar-block" class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-[2rem] shadow-lg border border-white/50 dark:border-gray-700 p-6 relative overflow-hidden group hover:shadow-xl transition-all duration-300">
                 <div class="absolute -top-10 -right-10 w-32 h-32 bg-green-400/20 rounded-full blur-2xl"></div>
@@ -49,14 +49,14 @@
 
                     <div class="text-center mb-6">
                         <div class="flex justify-center items-center gap-6">
-                            <button id="prev_date" class="p-2 hover:bg-black/5 rounded-full transition-colors text-gray-400 hover:text-green-600">
+                            <button id="prev_date" class="p-2 hover:bg-black/5 rounded-full transition-colors text-gray-400 hover:text-green-600" aria-label="Ngày trước" title="Ngày trước">
                                 <i data-lucide="chevron-left" class="w-6 h-6"></i>
                             </button>
                             <div class="flex flex-col items-center">
                                 <span id="calendar-day" class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-green-600 to-teal-500">--</span>
                                 <span id="calendar-weekday" class="text-lg font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">--</span>
                             </div>
-                            <button id="next_date" class="p-2 hover:bg-black/5 rounded-full transition-colors text-gray-400 hover:text-green-600">
+                            <button id="next_date" class="p-2 hover:bg-black/5 rounded-full transition-colors text-gray-400 hover:text-green-600" aria-label="Ngày sau" title="Ngày sau">
                                 <i data-lucide="chevron-right" class="w-6 h-6"></i>
                             </button>
                         </div>

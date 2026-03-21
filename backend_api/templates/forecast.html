@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 animate-fade-in-up delay-200">
         
         <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/50 dark:border-gray-700 p-8 relative overflow-hidden group hover:shadow-2xl transition-all duration-300">
             <div class="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
@@ -118,6 +118,16 @@
                     <i data-lucide="cloud-rain" class="w-5 h-5 text-cyan-500 mx-auto mb-1"></i>
                     <div class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-bold">Mưa</div>
                     <div class="font-bold text-gray-800 dark:text-white" id="precipitation">--</div>
+                </div>
+                <div class="p-3 bg-white/40 dark:bg-gray-700/40 rounded-2xl border border-white/30 dark:border-gray-600 text-center hover:bg-white/60 transition-colors">
+                    <i data-lucide="cloud" class="w-5 h-5 text-gray-500 mx-auto mb-1"></i>
+                    <div class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-bold">Mây</div>
+                    <div class="font-bold text-gray-800 dark:text-white" id="cloud-cover">--%</div>
+                </div>
+                <div class="p-3 bg-white/40 dark:bg-gray-700/40 rounded-2xl border border-white/30 dark:border-gray-600 text-center hover:bg-white/60 transition-colors">
+                    <i data-lucide="wind" class="w-5 h-5 text-red-500 mx-auto mb-1"></i>
+                    <div class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-bold">Gió giật</div>
+                    <div class="font-bold text-gray-800 dark:text-white" id="wind-gusts">--</div>
                 </div>
             </div>
         </div>
@@ -190,7 +200,7 @@
         </div>
     </div>
 
-    <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/50 dark:border-gray-700 p-8 mb-8 animate-fade-in-up" style="animation-delay: 0.3s;">
+    <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/50 dark:border-gray-700 p-8 mb-8 animate-fade-in-up delay-300">
         <div class="flex items-center gap-3 mb-6">
             <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-xl text-blue-600 dark:text-blue-300">
                 <i data-lucide="clock" class="w-5 h-5"></i>
@@ -204,7 +214,7 @@
         </div>
     </div>
     
-    <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/50 dark:border-gray-700 p-8 mb-8 animate-fade-in-up" style="animation-delay: 0.4s;">
+    <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/50 dark:border-gray-700 p-8 mb-8 animate-fade-in-up delay-400">
         <div class="flex items-center gap-3 mb-6">
             <div class="p-2 bg-green-100 dark:bg-green-900 rounded-xl text-green-600 dark:text-green-300">
                 <i data-lucide="calendar-days" class="w-5 h-5"></i>
@@ -215,7 +225,7 @@
             </div>
     </div>
 
-    <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/50 dark:border-gray-700 p-8 mb-8 animate-fade-in-up" style="animation-delay: 0.5s;">
+    <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/50 dark:border-gray-700 p-8 mb-8 animate-fade-in-up delay-500">
         <div class="flex items-center gap-3 mb-8">
             <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-xl text-indigo-600 dark:text-indigo-300">
                 <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
@@ -228,15 +238,15 @@
                 <div class="flex items-center gap-2 mb-4 text-orange-600 dark:text-orange-400 font-bold">
                     <i data-lucide="thermometer-sun" class="w-5 h-5"></i> Nhiệt độ & Độ ẩm
                 </div>
-                <div style="height: 300px; position: relative;">
-                     <canvas id="chart-temp-humidity"></canvas>
+                <div class="chart-container">
+                    <canvas id="chart-temp-humidity"></canvas>
                 </div>
             </div>
             <div class="bg-white/50 dark:bg-gray-700/30 backdrop-blur-sm p-6 rounded-3xl border border-white/40 dark:border-gray-600 shadow-sm hover:shadow-md transition-shadow">
                 <div class="flex items-center gap-2 mb-4 text-blue-600 dark:text-blue-400 font-bold">
                     <i data-lucide="cloud-drizzle" class="w-5 h-5"></i> Lượng mưa
                 </div>
-                <div style="height: 300px; position: relative;">
+                <div class="chart-container">
                     <canvas id="chart-precipitation"></canvas>
                 </div>
             </div>
@@ -244,7 +254,7 @@
                 <div class="flex items-center gap-2 mb-4 text-green-600 dark:text-green-400 font-bold">
                     <i data-lucide="wind" class="w-5 h-5"></i> Tốc độ gió
                 </div>
-                <div style="height: 300px; position: relative;">
+                <div class="chart-container">
                     <canvas id="chart-wind"></canvas>
                 </div>
             </div>
@@ -252,7 +262,7 @@
                 <div class="flex items-center gap-2 mb-4 text-purple-600 dark:text-purple-400 font-bold">
                     <i data-lucide="gauge" class="w-5 h-5"></i> Áp suất
                 </div>
-                <div style="height: 300px; position: relative;">
+                <div class="chart-container">
                     <canvas id="chart-pressure"></canvas>
                 </div>
             </div>
@@ -505,6 +515,8 @@
         document.getElementById('pressure').textContent = `${Math.round(current.pressure_msl || 0)} hPa`;
         document.getElementById('uv-index').textContent = (current.uv_index || 0).toFixed(1);
         document.getElementById('precipitation').textContent = `${(current.precipitation || 0).toFixed(1)} mm`;
+        document.getElementById('cloud-cover').textContent = `${Math.round(current.cloud_cover || 0)}%`;
+        document.getElementById('wind-gusts').textContent = `${(current.wind_gusts_10m || 0).toFixed(1)} km/h`;
 
         if (daily.sunrise && daily.sunset && daily.sunrise[0]) {
             const sunrise = new Date(daily.sunrise[0]).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });

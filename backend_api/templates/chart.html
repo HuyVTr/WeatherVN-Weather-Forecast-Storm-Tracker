@@ -1,58 +1,281 @@
 {% extends "layout.html" %}
-{% block title %}Biểu đồ thời tiết - WeatherVN{% endblock %}
+{% block title %}Phân tích Biểu đồ Thời tiết - WeatherVN AI{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8 max-w-6xl">
-    <h1 class="text-4xl font-bold text-center text-white mb-10 drop-shadow-lg">
-        Biểu đồ nhiệt độ 7 ngày tới - Hà Nội
-    </h1>
-
-    <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20">
-        <canvas id="weatherChart" height="100"></canvas>
+<main class="flex-1 relative p-6 pb-20 overflow-hidden">
+    <!-- Atmospheric Background -->
+    <div class="fixed inset-0 -z-10 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-blue-950 dark:to-slate-950">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/10 blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-400/10 blur-[120px] animate-pulse delay-1000"></div>
     </div>
-</div>
 
+    <div class="max-w-7xl mx-auto space-y-8 animate-fade-in-up">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/40 dark:bg-white/5 backdrop-blur-2xl p-8 rounded-[2.5rem] border border-white/60 dark:border-white/10 shadow-2xl relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -mr-20 -mt-20"></div>
+            
+            <div class="relative z-10">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white transform group-hover:scale-110 transition-transform duration-500">
+                        <i data-lucide="line-chart" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-black text-gray-800 dark:text-white tracking-tight">Phân tích Biểu đồ</h1>
+                        <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">Xu hướng thời tiết trong 7 ngày tới</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Province Selector (UI Mockup for now, similar to forecast) -->
+            <div class="relative z-10 flex flex-wrap gap-3">
+                <div class="relative group/search">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500 group-focus-within/search:text-blue-500 transition-colors"></i>
+                    <input type="text" id="provinceSearch" list="provinces" placeholder="Tìm kiếm tỉnh thành..." 
+                        class="w-full md:w-72 bg-white/60 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm font-bold text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 backdrop-blur-md transition-all placeholder:text-gray-400">
+                    <datalist id="provinces"></datalist>
+                </div>
+                
+                <button id="useLocationBtn" class="flex items-center gap-2 px-6 py-3 bg-white/60 dark:bg-white/10 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 text-gray-700 dark:text-white rounded-2xl font-black text-xs uppercase tracking-widest border border-gray-200 dark:border-white/10 shadow-sm transition-all active:scale-95 group/btn">
+                    <i data-lucide="map-pin" class="w-4 h-4 group-hover/btn:animate-bounce"></i> Hiện tại
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Chart Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Primary Large Chart Card -->
+            <div class="lg:col-span-2 bg-white/60 dark:bg-slate-900/60 backdrop-blur-3xl rounded-[3rem] p-10 border border-white/60 dark:border-white/5 shadow-2xl relative overflow-hidden flex flex-col min-h-[500px]">
+                <div class="flex items-center justify-between mb-10 relative z-10">
+                    <div>
+                        <h2 id="chartTitle" class="text-xl font-black text-gray-800 dark:text-white flex items-center gap-3">
+                            <i data-lucide="thermometer" class="w-6 h-6 text-orange-500"></i> Nhiệt độ Dự báo
+                        </h2>
+                        <span id="currentProvince" class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1 block">Tất cả tỉnh thành: Hà Nội</span>
+                    </div>
+                    
+                    <div class="flex bg-gray-100 dark:bg-white/5 p-1.5 rounded-2xl border border-gray-200 dark:border-white/5">
+                        <button onclick="changeMetric('temp')" class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-white dark:bg-blue-600 shadow-lg shadow-blue-500/20 text-blue-600 dark:text-white active-tab">Temp</button>
+                        <button onclick="changeMetric('humidity')" class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-gray-500 hover:text-blue-500 hover:bg-white dark:hover:bg-white/10">Humid</button>
+                    </div>
+                </div>
+
+                <div class="flex-1 relative">
+                    <canvas id="mainWeatherChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Side Stats/AI Insights -->
+            <div class="flex flex-col gap-8">
+                
+                <!-- Summary Card -->
+                <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
+                    <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    <h3 class="text-sm font-black uppercase tracking-[0.2em] opacity-70 mb-6 flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-yellow-300"></i> AI Insight
+                    </h3>
+                    
+                    <div class="space-y-6 relative z-10">
+                        <div>
+                            <p class="text-3xl font-black leading-tight">Xu hướng tăng nhiệt nhẹ vào cuối tuần.</p>
+                            <p class="text-sm text-white/70 font-medium mt-3 leading-relaxed">Hệ thống phát hiện mẫu hình nóng dần lên từ thứ 6. Độ ẩm duy trì ở mức trung bình 65%.</p>
+                        </div>
+                        
+                        <div class="pt-6 border-t border-white/20 grid grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-[10px] font-black uppercase tracking-widest opacity-60">Trung bình</span>
+                                <div class="text-2xl font-black mt-1">28.5°C</div>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black uppercase tracking-widest opacity-60">Đỉnh điểm</span>
+                                <div class="text-2xl font-black mt-1">32°C</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Chart/Gauge Mockup -->
+                <div class="bg-white/60 dark:bg-white/5 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 dark:border-white/10 shadow-xl flex-1 flex flex-col">
+                    <h3 class="text-sm font-black text-gray-700 dark:text-white uppercase tracking-widest mb-8 flex items-center gap-3">
+                        <i data-lucide="wind" class="w-5 h-5 text-blue-500"></i> Xu hướng Gió
+                    </h3>
+                    
+                    <div class="flex-1 flex flex-col justify-center items-center py-4">
+                        <div class="relative w-40 h-40">
+                             <!-- Circle Progress Placeholder -->
+                             <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="80" cy="80" r="70" class="stroke-gray-200 dark:stroke-white/5 fill-none" stroke-width="12"></circle>
+                                <circle cx="80" cy="80" r="70" class="stroke-blue-500 fill-none" stroke-width="12" stroke-dasharray="440" stroke-dashoffset="120" stroke-linecap="round"></circle>
+                             </svg>
+                             <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="text-3xl font-black text-gray-800 dark:text-white">12</span>
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">km/h</span>
+                             </div>
+                        </div>
+                        <p class="text-center text-xs font-bold text-gray-500 dark:text-slate-400 mt-6 px-4">
+                            Tốc độ gió trung bình ổn định, không có dấu hiệu bất thường.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Chart.js and Logic -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('weatherChart').getContext('2d');
+    // Initialize Lucide icons
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
+
+    const ctx = document.getElementById('mainWeatherChart').getContext('2d');
+    const isDark = document.documentElement.classList.contains('dark');
     
-    new Chart(ctx, {
+    // Create modern gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
+    gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+    const chartConfig = {
         type: 'line',
         data: {
-            labels: ['Hôm nay', 'Ngày mai', '3', '4', '5', '6', '7'],
+            labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'CN'],
             datasets: [{
                 label: 'Nhiệt độ (°C)',
-                data: [28, 30, 29, 31, 27, 26, 29],
-                borderColor: '#FBBF24',
-                backgroundColor: 'rgba(251, 191, 36, 0.2)',
-                tension: 0.4,
+                data: [27, 29, 28, 30, 31, 29, 32],
+                borderColor: '#3b82f6',
+                borderWidth: 4,
+                backgroundColor: gradient,
+                tension: 0.5,
                 fill: true,
-                pointBackgroundColor: '#FFF',
-                pointBorderColor: '#F59E0B',
-                pointHoverRadius: 8,
-                pointRadius: 6
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#3b82f6',
+                pointBorderWidth: 4,
+                pointRadius: 8,
+                pointHoverRadius: 10,
+                pointHoverBackgroundColor: '#3b82f6',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 4,
             }]
         },
         options: {
             responsive: true,
-            
+            maintainAspectRatio: false,
             plugins: {
-                legend: { labels: { color: 'white', font: { size: 16 } } }
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                    titleColor: isDark ? '#fff' : '#1e293b',
+                    bodyColor: isDark ? '#cbd5e1' : '#475569',
+                    padding: 16,
+                    cornerRadius: 16,
+                    displayColors: false,
+                    bodyFont: {
+                        family: 'Inter, sans-serif',
+                        weight: 'bold',
+                        size: 14
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            return `Nhiệt độ: ${context.parsed.y}°C`;
+                        }
+                    }
+                }
             },
             scales: {
                 y: { 
                     beginAtZero: false,
-                    grid: { color: 'rgba(255,255,255,0.1)' },
-                    ticks: { color: 'white' }
+                    grid: { 
+                        display: true,
+                        color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false
+                    },
+                    ticks: { 
+                        color: isDark ? '#94a3b8' : '#64748b',
+                        font: {
+                            weight: 'bold',
+                            size: 12
+                        },
+                        padding: 10
+                    }
                 },
                 x: { 
-                    grid: { color: 'rgba(255,255,255,0.1)' },
-                    ticks: { color: 'white' }
+                    grid: { 
+                        display: false 
+                    },
+                    ticks: { 
+                        color: isDark ? '#94a3b8' : '#64748b',
+                        font: {
+                            weight: 'bold',
+                            size: 12
+                        },
+                        padding: 10
+                    }
                 }
             }
         }
-    });
+    };
+
+    const weatherChart = new Chart(ctx, chartConfig);
+
+    // Dynamic Chart Updates Mock
+    window.changeMetric = function(metric) {
+        const btnTemp = document.querySelector('button[onclick*="temp"]');
+        const btnHumid = document.querySelector('button[onclick*="humidity"]');
+        
+        if (metric === 'temp') {
+            weatherChart.data.datasets[0].label = 'Nhiệt độ (°C)';
+            weatherChart.data.datasets[0].data = [27, 29, 28, 30, 31, 29, 32];
+            weatherChart.data.datasets[0].borderColor = '#3b82f6';
+            weatherChart.data.datasets[0].pointBorderColor = '#3b82f6';
+            
+            btnTemp.classList.add('bg-white', 'dark:bg-blue-600', 'shadow-lg', 'text-blue-600', 'dark:text-white');
+            btnTemp.classList.remove('text-gray-500');
+            btnHumid.classList.remove('bg-white', 'dark:bg-blue-600', 'shadow-lg', 'text-blue-600', 'dark:text-white');
+            btnHumid.classList.add('text-gray-500');
+            
+            document.getElementById('chartTitle').innerHTML = '<i data-lucide="thermometer" class="w-6 h-6 text-orange-500"></i> Nhiệt độ Dự báo';
+        } else {
+            weatherChart.data.datasets[0].label = 'Độ ẩm (%)';
+            weatherChart.data.datasets[0].data = [65, 62, 68, 70, 75, 72, 68];
+            weatherChart.data.datasets[0].borderColor = '#06b6d4';
+            weatherChart.data.datasets[0].pointBorderColor = '#06b6d4';
+            
+            btnHumid.classList.add('bg-white', 'dark:bg-blue-600', 'shadow-lg', 'text-blue-600', 'dark:text-white');
+            btnHumid.classList.remove('text-gray-500');
+            btnTemp.classList.remove('bg-white', 'dark:bg-blue-600', 'shadow-lg', 'text-blue-600', 'dark:text-white');
+            btnTemp.classList.add('text-gray-500');
+            
+            document.getElementById('chartTitle').innerHTML = '<i data-lucide="droplets" class="w-6 h-6 text-cyan-500"></i> Độ ẩm Dự báo';
+        }
+        
+        weatherChart.update();
+        if (window.lucide) window.lucide.createIcons();
+    };
 });
 </script>
+
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.2);
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(148, 163, 184, 0.3);
+    }
+</style>
 {% endblock %}

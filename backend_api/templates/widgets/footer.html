@@ -12,30 +12,83 @@
                     Hệ thống dự báo thời tiết thông minh, cung cấp dữ liệu chính xác và nhanh chóng giúp bạn lên kế hoạch hiệu quả cho mọi hoạt động.
                 </p>
                 <div class="flex space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
 
+            <!-- Column: Explore -->
             <div>
-                <h3 class="text-lg font-bold text-white mb-4 border-b border-gray-600 pb-2 inline-block">Khám phá</h3>
-                <ul class="space-y-2">
-                    <li><a href="{{ url_for('main_bp.route_home') }}" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><span class="mr-2">›</span> Trang chủ</a></li>
-                    <li><a href="{{ url_for('forecast_bp.forecast_page') }}" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><span class="mr-2">›</span> Dự báo thời tiết</a></li>
-                    <li><a href="http://127.0.0.1:8000/" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><span class="mr-2">›</span> Bản đồ vệ tinh</a></li>
-                    <li><a href="{{ url_for('chart_bp.route_chart') }}" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><span class="mr-2">›</span> Biểu đồ phân tích</a></li>
-                    <li><a href="{{ url_for('main_bp.route_news') }}" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><span class="mr-2">›</span> Tin tức</a></li>
+                <h3 class="text-lg font-black text-white mb-6 flex items-center gap-2 group/title">
+                    <span class="w-1.5 h-6 bg-cyan-500 rounded-full group-hover/title:h-8 transition-all duration-300"></span>
+                    Khám phá
+                </h3>
+                <ul class="space-y-3">
+                    <li>
+                        <a href="{{ url_for('main_bp.route_home') }}" class="group flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:translate-x-1">
+                            <i data-lucide="home" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Trang chủ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('forecast_bp.forecast_page') }}" class="group flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:translate-x-1">
+                            <i data-lucide="cloud-sun" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Dự báo thời tiết</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/weather-map" class="group flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:translate-x-1">
+                            <i data-lucide="map" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Bản đồ thời tiết</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('chart_bp.route_chart') }}" class="group flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:translate-x-1">
+                            <i data-lucide="line-chart" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Biểu đồ phân tích</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('main_bp.route_news') }}" class="group flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:translate-x-1">
+                            <i data-lucide="newspaper" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Tin tức</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
+            <!-- Column: About Us -->
             <div>
-                <h3 class="text-lg font-bold text-white mb-4 border-b border-gray-600 pb-2 inline-block">Về chúng tôi</h3>
-                <ul class="space-y-2">
-                    <li><a href="{{ url_for('main_bp.about') }}" class="text-gray-400 hover:text-green-400 transition-colors flex items-center"><span class="mr-2">›</span> Giới thiệu</a></li>
-                    <li><a href="{{ url_for('main_bp.contact') }}" class="text-gray-400 hover:text-green-400 transition-colors flex items-center"><span class="mr-2">›</span> Liên hệ & Góp ý</a></li>
-                    <li><a href="{{ url_for('main_bp.privacy') }}" class="text-gray-400 hover:text-green-400 transition-colors flex items-center"><span class="mr-2">›</span> Chính sách bảo mật</a></li>
-                    <li><a href="{{ url_for('main_bp.terms') }}" class="text-gray-400 hover:text-green-400 transition-colors flex items-center"><span class="mr-2">›</span> Điều khoản sử dụng</a></li>
+                <h3 class="text-lg font-black text-white mb-6 flex items-center gap-2 group/title">
+                    <span class="w-1.5 h-6 bg-green-500 rounded-full group-hover/title:h-8 transition-all duration-300"></span>
+                    Về chúng tôi
+                </h3>
+                <ul class="space-y-3">
+                    <li>
+                        <a href="{{ url_for('main_bp.about') }}" class="group flex items-center text-gray-400 hover:text-green-400 transition-all duration-300 transform hover:translate-x-1">
+                            <i data-lucide="info" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Giới thiệu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('main_bp.contact') }}" class="group flex items-center text-gray-400 hover:text-green-400 transition-all duration-300 transform hover:translate-x-1 text-nowrap">
+                            <i data-lucide="message-square" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Liên hệ & Góp ý</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('main_bp.privacy') }}" class="group flex items-center text-gray-400 hover:text-green-400 transition-all duration-300 transform hover:translate-x-1 text-nowrap">
+                            <i data-lucide="shield-check" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Chính sách bảo mật</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('main_bp.terms') }}" class="group flex items-center text-gray-400 hover:text-green-400 transition-all duration-300 transform hover:translate-x-1 text-nowrap">
+                            <i data-lucide="file-text" class="w-4 h-4 mr-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 ease-out"></i>
+                            <span class="font-medium">Điều khoản sử dụng</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
