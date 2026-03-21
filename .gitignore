@@ -25,7 +25,7 @@ project_data/processed_output/*.csv
 
 # 3. Đảm bảo GIỮ LẠI file mô phỏng bão Rai (vì nó nhẹ và cần để chạy mục 5)
 !services/storm_prediction_service/simulation_data/actual_path.csv
-.serena/memories/suggested_commands.md
-.serena/memories/completion_checklist.md
-.serena/memories/style_and_conventions.md
-.serena/memories/project_overview.md
+# 4. Agent Tools (Dùng lệnh assume-unchanged thay thế để dùng được phím @)
+test_write.txt
+.vscode/
+.agents/

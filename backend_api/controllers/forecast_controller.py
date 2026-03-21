@@ -270,26 +270,11 @@ def api_get_forecast():
         response.raise_for_status()
         api_data = response.json()
 
-        # 2. LẤY DỮ LIỆU ML (Ưu tiên Cache)
+        # 2. LẤY DỮ LIỆU ML (Dự báo sử dụng Machine Learning)
         ml_data = None
         try:
-            # Query bảng cache (Bỏ qua vì không có DB)
-            # query = text("SELECT forecast_data FROM weather_forecast_cache WHERE province_id = :pid")
-            # with db_engine.connect() as conn:
-            #     result = conn.execute(query, {"pid": province.province_id}).fetchone()
-            
-            # Nếu có dữ liệu trong Cache (Bỏ qua vì không có DB)
-            # if result and result[0]:
-            #     raw_data = result[0]
-            #     if isinstance(raw_data, str):
-            #         ml_data = json.loads(raw_data)
-            #     else:
-            #         ml_data = raw_data
-            # print(f"⚡ [CACHE HIT] Đã lấy dữ liệu dự báo cho {province_name}")
-
-            # 3. FALLBACK: Nếu Cache trống (luôn luôn đúng), chạy tính toán ngay lập tức
-            # if not ml_data: # Điều kiện này sẽ luôn đúng
-            print(f"🐢 [CACHE MISS] Đang tính toán realtime cho {province_name}...")
+            # 3. FALLBACK: Chạy tính toán realtime dựa trên dữ liệu mới nhất
+            # Dữ liệu này sẽ được predict_storm lấy từ SQLite (bảng weather_data)
             current_weather_data = {
                 'temperature_2m': api_data.get("current", {}).get('temperature_2m', 25),
                 'relative_humidity_2m': api_data.get("current", {}).get('relative_humidity_2m', 70),
@@ -297,17 +282,17 @@ def api_get_forecast():
                 'wind_speed_10m': api_data.get("current", {}).get('wind_speed_10m', 5)
             }
             
+            # Gọi hàm dự báo AI
             ml_data = predict_storm(province['province_id'], current_weather_data)
             
-            if 'error' in ml_data:
-                print(f"Lỗi ML prediction: {ml_data['error']}")
+            if ml_data and 'error' in ml_data:
+                print(f"Bỏ qua AI (Model chưa sẵn sàng): {ml_data['error']}")
                 ml_data = None
-
         except Exception as e:
-            print(f"Lỗi khi xử lý Cache/ML: {e}")
-            # Nếu lỗi DB cache, vẫn tiếp tục với ml_data = None (chỉ hiển thị API data)
-
-        # 4. Merge API và ML data
+            print(f"Lỗi khi xử lý ML: {e}")
+            ml_data = None
+            
+        # 4. Merge API và ML data (Hệ thống sẽ tự dùng API data nếu ml_data là None)
         forecast_data = merge_api_and_ml_data(api_data, ml_data, province_name)
 
         # 5. Fetch AQI (Chỉ số không khí)

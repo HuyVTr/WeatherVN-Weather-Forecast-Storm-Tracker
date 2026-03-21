@@ -1,5 +1,9 @@
-import psycopg2
-import psycopg2.extras as extras
+try:
+    import psycopg2
+    import psycopg2.extras as extras
+except ImportError:
+    psycopg2 = None
+    extras = None
 import pandas as pd
 from io import StringIO
 import traceback
@@ -19,16 +23,35 @@ DB_CONFIG = {
 RAIN_THRESHOLD = 50.0  # mm/h (Ví dụ: Mưa lớn > 50 mm/h)
 WIND_THRESHOLD = 20.0  # m/s (Ví dụ: Gió mạnh > 20 m/s)
 
+import sqlite3
+import os
+
+# Đường dẫn tự động tìm file .db của bạn
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+SQLITE_DB_PATH = os.path.join(os.path.dirname(CURRENT_DIR), "weather_project.db")
+
 def connect_to_db():
     """
-    Kết nối đến PostgreSQL database và trả về connection object.
+    Kết nối đến Database. Ưu tiên PostgreSQL nếu có psycopg2, 
+    nếu không sẽ tự động dùng SQLite (weather_project.db).
     """
+    if psycopg2 is not None:
+        try:
+            conn = psycopg2.connect(**DB_CONFIG)
+            print("Đã kết nối PostgreSQL thành công.")
+            return conn
+        except Exception as e:
+            print(f"Bỏ qua PostgreSQL (Lỗi kết nối): {e}")
+    
+    # FALLBACK SANG SQLITE
     try:
-        conn = psycopg2.connect(**DB_CONFIG)
-        print("Kết nối database thành công.")
+        conn = sqlite3.connect(SQLITE_DB_PATH)
+        # Bật Row Factory để lấy dữ liệu dạng Dictionary/Tuple dễ dàng
+        conn.row_factory = sqlite3.Row
+        print(f"Đã kết nối SQlite thành công (File: {SQLITE_DB_PATH})")
         return conn
     except Exception as e:
-        print(f"LỖI KẾT NỐI DATABASE: {e}\n\nVui lòng kiểm tra lại DB_CONFIG và đảm bảo PostgreSQL đang chạy.")
+        print(f"LỖI KẾT NỐI SQLITE: {e}")
         return None
 
 def get_provinces_from_db(conn):

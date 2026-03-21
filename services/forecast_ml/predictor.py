@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from data_pipeline.data_storage import connect_to_db
+# from data_pipeline.data_storage import connect_to_db # Bỏ qua để tránh lỗi psycopg2
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), 'models/weather_xgboost_multi.pkl')
 FEATURE_COLS_PATH = os.path.join(os.path.dirname(__file__), 'models/feature_cols.pkl')
@@ -33,16 +33,29 @@ def load_model():
 
 def load_historical_data(province_id, hours=168):
     """
-    Tạo dữ liệu lịch sử giả định vì không có database.
-    
-    Args:
-        province_id: ID của tỉnh
-        hours: Số giờ lịch sử cần lấy (mặc định 168 = 7 ngày)
-    
-    Returns:
-        DataFrame với dữ liệu lịch sử giả định
+    Lấy dữ liệu lịch sử từ Database thật (SQLite).
+    Nếu không có DB, sẽ tự động dùng dữ liệu giả định để không lỗi.
     """
-    # Tạo dữ liệu giả định 168 giờ
+    conn = connect_to_db()
+    if conn:
+        try:
+            query = f'SELECT * FROM weather_data WHERE province_id = ? ORDER BY "timestamp" DESC LIMIT ?'
+            # Đối với SQLite, dùng dấu ? thay vì %s
+            df = pd.read_sql_query(query, conn, params=(province_id, hours))
+            conn.close()
+            
+            if not df.empty:
+                # Đảm bảo sắp xếp đúng thời gian
+                df['timestamp'] = pd.to_datetime(df['timestamp'])
+                df = df.sort_values('timestamp').reset_index(drop=True)
+                print(f"📊 Đã nạp {len(df)} dòng dữ liệu thật từ Database.")
+                return df
+        except Exception as e:
+            print(f"Lỗi truy vấn DB: {e}")
+            if conn: conn.close()
+            
+    print("⚠️  Dùng dữ liệu giả định (MOCK) do Database hiện tại chưa đủ dữ liệu.")
+    # Fallback: Tạo dữ liệu giả định 168 giờ (mã cũ của bạn)
     data = {
         'timestamp': [datetime.now() - timedelta(hours=i) for i in range(hours -1 , -1, -1)],
         'temperature_2m': np.random.uniform(20, 30, hours),
@@ -65,10 +78,8 @@ def load_historical_data(province_id, hours=168):
         'uv_index': np.random.uniform(0, 10, hours),
         'sunshine_duration': np.random.uniform(0, 60, hours)
     }
-    
     df = pd.DataFrame(data)
-    df = df.sort_values('timestamp').reset_index(drop=True) # Ensure sorted by time
-    
+    df = df.sort_values('timestamp').reset_index(drop=True)
     return df
 
 def create_features(df, target_time):

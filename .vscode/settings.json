@@ -2,9 +2,8 @@
     "python.analysis.extraPaths": [
         ".",
         "./backend_api",
-        "./services"
+        "./services",
+        "${workspaceFolder}\\venv\\Lib\\site-packages"
     ],
-    "python.defaultInterpreterPath": "d:\\blabla\\DACN\\dang chay ngon\\weather_project 2 backup\\gfs va gdac\\venv\\Scripts\\python.exe",
-    "python.linting.pylance.enabled": true,
-    "python.linting.enabled": true
+    "python.defaultInterpreterPath": "${workspaceFolder}\\venv\\Scripts\\python.exe"
 }
