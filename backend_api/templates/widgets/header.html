@@ -1,158 +1,217 @@
-<header class="bg-gradient-to-r from-blue-400/80 to-cyan-500/80 backdrop-blur-xl shadow-2xl sticky top-0 z-50 transition-all duration-300">
-    <nav class="container mx-auto flex justify-between items-center py-4 px-4 lg:px-8">
-        <a href="{{ url_for('main_bp.route_home') }}" class="flex items-center gap-2 text-white font-extrabold text-3xl tracking-tighter group transition-colors duration-300 hover:text-yellow-100">
-            <svg class="w-9 h-9 text-yellow-300 transform group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-3.71 0-6.73 2.7-7.29 6.29C2.47 10.61 0 13.1 0 16c0 3.31 2.69 6 6 6h13c3.87 0 7-3.13 7-7 0-3.61-2.73-6.56-6.65-6.96zM12 20c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fill="url(#weather-gradient)"/>
-                <defs>
-                    <linearGradient id="weather-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="rgb(253, 230, 138)" stop-opacity="1" /> <stop offset="100%" stop-color="rgb(255, 255, 255)" stop-opacity="1" /> </linearGradient>
-                </defs>
-            </svg>
-            <span class="relative">
-                WeatherVN
-                <span class="absolute -bottom-1 left-0 w-full h-1 bg-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></span>
-            </span>
-        </a>
-
-        <div class="hidden lg:flex space-x-10 text-white font-semibold">
-            <a href="{{ url_for('main_bp.route_home') }}" class="nav-item">Trang chủ</a>
-            <a href="{{ url_for('forecast_bp.forecast_page') }}" class="nav-item">Dự báo thời tiết</a>
+<!-- backend_api/templates/widgets/header.html -->
+<header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        <nav id="nav-container" class="bg-white/70 dark:bg-slate-900/40 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-[2rem] shadow-2xl transition-all duration-500 px-6 py-3 flex justify-between items-center group/nav">
             
-            <a href="{{ url_for('main_bp.route_weather_map') }}" class="nav-item">Bản đồ thời tiết</a>
+            <!-- Logo Area -->
+            <a href="{{ url_for('main_bp.route_home') }}" class="flex items-center gap-3 group/logo relative">
+                <div class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/20 group-hover/logo:scale-110 group-hover/logo:rotate-3 transition-all duration-500">
+                    <i data-lucide="cloud-sun" class="w-6 h-6 text-white animate-pulse"></i>
+                    <div class="absolute inset-0 bg-white/20 rounded-2xl blur-sm opacity-0 group-hover/logo:opacity-100 transition-opacity"></div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black text-gray-800 dark:text-white tracking-tighter leading-none italic">
+                        Weather<span class="text-blue-600 dark:text-blue-400">VN</span>
+                    </span>
+                    <span class="text-[9px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-gray-500 leading-none mt-1">AI Forecast</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex items-center bg-gray-100/50 dark:bg-white/5 p-1 rounded-2xl border border-gray-200/50 dark:border-white/5">
+                <a href="{{ url_for('main_bp.route_home') }}" class="nav-link {% if nav_active == 'home' %}active{% endif %}">
+                    <i data-lucide="home" class="w-4 h-4 mr-2"></i> Trang chủ
+                </a>
+                <a href="{{ url_for('forecast_bp.forecast_page') }}" class="nav-link {% if nav_active == 'forecast' %}active{% endif %}">
+                    <i data-lucide="cloud-rain" class="w-4 h-4 mr-2"></i> Dự báo
+                </a>
+                <a href="{{ url_for('main_bp.route_weather_map') }}" class="nav-link {% if nav_active == 'weather_map' %}active{% endif %}">
+                    <i data-lucide="map" class="w-4 h-4 mr-2"></i> Bản đồ
+                </a>
+                <a href="{{ url_for('chart_bp.route_chart') }}" class="nav-link {% if nav_active == 'chart' %}active{% endif %}">
+                    <i data-lucide="line-chart" class="w-4 h-4 mr-2"></i> Biểu đồ
+                </a>
+                <a href="{{ url_for('main_bp.route_news') }}" class="nav-link {% if nav_active == 'news' %}active{% endif %}">
+                    <i data-lucide="newspaper" class="w-4 h-4 mr-2"></i> Tin tức
+                </a>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-3">
+                <!-- Location Info (Mockup) -->
+                <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-600 dark:text-blue-400">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                    <span class="text-xs font-black uppercase tracking-wider">Việt Nam</span>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button id="menu-toggle" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-all active:scale-90" aria-label="Menu">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6 transition-all"></i>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-x-4 top-24 bottom-auto lg:hidden bg-white/90 dark:bg-slate-900/95 backdrop-blur-3xl rounded-[2.5rem] border border-white/60 dark:border-white/10 shadow-2xl opacity-0 translate-y-4 pointer-events-none transition-all duration-500 z-40 overflow-hidden">
+        <div class="p-6 space-y-2">
+            <a href="{{ url_for('main_bp.route_home') }}" class="mobile-nav-link">
+                <i data-lucide="home" class="w-5 h-5"></i> <span>Trang chủ</span>
+            </a>
+            <a href="{{ url_for('forecast_bp.forecast_page') }}" class="mobile-nav-link">
+                <i data-lucide="cloud-rain" class="w-5 h-5"></i> <span>Dự báo thời tiết</span>
+            </a>
+            <a href="{{ url_for('main_bp.route_weather_map') }}" class="mobile-nav-link">
+                <i data-lucide="map" class="w-5 h-5"></i> <span>Bản đồ thời tiết</span>
+            </a>
+            <a href="{{ url_for('chart_bp.route_chart') }}" class="mobile-nav-link">
+                <i data-lucide="line-chart" class="w-5 h-5"></i> <span>Biểu đồ phân tích</span>
+            </a>
+            <a href="{{ url_for('main_bp.route_news') }}" class="mobile-nav-link">
+                <i data-lucide="newspaper" class="w-5 h-5"></i> <span>Tin tức mới nhất</span>
+            </a>
             
-            <a href="{{ url_for('chart_bp.route_chart') }}" class="nav-item">Biểu đồ</a>
-
-            <a href="{{ url_for('main_bp.route_news') }}" class="nav-item">Tin tức</a>
-        </div>
-
-        <button id="menu-toggle" class="lg:hidden p-2 rounded-full text-white hover:bg-white/20 transition-colors duration-300 focus:outline-none" aria-label="Toggle menu" title="Mở menu">
-            <svg id="menu-icon-open" class="w-7 h-7 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-            <svg id="menu-icon-close" class="w-7 h-7 absolute transition-opacity duration-300 opacity-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </>
-    </nav>
-
-    <div id="mobile-menu" class="lg:hidden h-0 overflow-hidden transition-all duration-500 ease-in-out bg-gray-800/95 backdrop-blur-sm">
-        <div class="container mx-auto px-4 py-4 space-y-2">
-            <a href="{{ url_for('main_bp.route_home') }}" class="mobile-nav-item">Trang chủ</a>
-            <a href="{{ url_for('forecast_bp.forecast_page') }}" class="nav-item">Dự báo thời tiết</a>
-            
-            <a href="{{ url_for('main_bp.route_weather_map') }}" class="mobile-nav-item">Bản đồ thời tiết</a>
-
-            <a href="{{ url_for('chart_bp.route_chart') }}" class="mobile-nav-item">Biểu đồ</a>
-            
-            <a href="{{ url_for('main_bp.route_news') }}" class="mobile-nav-item">Tin tức</a>
+            <div class="pt-6 mt-4 border-t border-gray-100 dark:border-white/10 grid grid-cols-2 gap-4">
+                <div class="p-4 bg-blue-500/5 rounded-2xl flex flex-col items-center gap-2">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-blue-500"></i>
+                    <span class="text-[10px] font-black uppercase text-blue-600">Secure AI</span>
+                </div>
+                <div class="p-4 bg-indigo-500/5 rounded-2xl flex flex-col items-center gap-2">
+                    <i data-lucide="zap" class="w-5 h-5 text-indigo-500"></i>
+                    <span class="text-[10px] font-black uppercase text-indigo-600">Fast Data</span>
+                </div>
+            </div>
         </div>
     </div>
 
     <style>
-        /* Modern hover effect for desktop menu items */
-        .nav-item {
-            position: relative;
-            padding: 8px 0;
-            color: white;
-            transition: all 0.3s ease-in-out;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0); 
+        /* Nav Link Base Styles */
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 14px;
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: #64748b; /* slate-500 */
+            transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .nav-item::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px; 
-            background: linear-gradient(90deg, #60A5FA, #3B82F6); 
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform: translateX(-50%);
-            border-radius: 2px;
-            box-shadow: 0 0 8px rgba(59, 130, 246, 0);
+        .darkMode .nav-link {
+            color: #94a3b8; /* slate-400 */
         }
 
-        .nav-item:hover {
-            color: #FDE68A; /* yellow-200 */ 
-            text-shadow: 0 0 10px rgba(253, 230, 138, 0.8); /* Text glow on hover */
+        .nav-link:hover {
+            color: #3b82f6; /* blue-500 */
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateY(-1px);
         }
 
-        .nav-item:hover::after {
-            width: 100%;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+        /* Active State */
+        .nav-link.active {
+            background: #ffffff;
+            color: #1e3a8a; /* blue-900 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        /* Mobile nav item styling */
-        .mobile-nav-item {
-            display: block;
-            color: #E5E7EB; 
-            font-weight: 500; 
-            padding: 10px 16px;
-            border-radius: 8px;
-            transition: background-color 0.3s, color 0.3s;
-            position: relative;
-            overflow: hidden;
+        .dark .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .mobile-nav-item:hover {
-            background-color: #374151; 
-            color: #FFFFFF;
+        /* Mobile Nav Link */
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: 20px;
+            font-weight: 800;
+            color: #475569; /* slate-600 */
+            transition: all 300ms;
+        }
+
+        .dark .mobile-nav-link {
+            color: #cbd5e1; /* slate-300 */
+        }
+
+        .mobile-nav-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            transform: translateX(8px);
+        }
+
+        .mobile-nav-link i {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        /* Header Scroll Effect */
+        #main-header.scrolled #nav-container {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark #main-header.scrolled #nav-container {
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        #main-header.scrolled {
+            padding-top: 1rem;
         }
     </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('main-header');
             const menuToggle = document.getElementById('menu-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
-            const menuIconOpen = document.getElementById('menu-icon-open');
-            const menuIconClose = document.getElementById('menu-icon-close');
+            const menuIcon = document.getElementById('menu-icon');
 
+            // Scroll Effect
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Mobile Menu Toggle
             if (menuToggle && mobileMenu) {
                 menuToggle.addEventListener('click', () => {
-                    const isMenuOpen = mobileMenu.classList.contains('menu-open');
-
-                    if (isMenuOpen) {
-                        // Close menu
-                        mobileMenu.style.height = '0';
-                        mobileMenu.classList.remove('menu-open');
-                        
-                        // Icon transition: X to Burger
-                        menuIconClose.classList.remove('opacity-100');
-                        menuIconClose.classList.add('opacity-0');
-                        setTimeout(() => {
-                            menuIconClose.classList.add('absolute');
-                            menuIconOpen.classList.remove('absolute');
-                            menuIconOpen.classList.remove('opacity-0');
-                            menuIconOpen.classList.add('opacity-100');
-                        }, 150); 
+                    const isOpen = mobileMenu.classList.contains('opacity-100');
+                    if (isOpen) {
+                        mobileMenu.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                        mobileMenu.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                        lucide.createIcons({
+                            icons: { menu: {} },
+                            nameAttr: 'data-lucide'
+                        });
+                        // Use Lucide to change icon back to menu
+                        menuIcon.setAttribute('data-lucide', 'menu');
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
                     } else {
-                        // Open menu
-                        mobileMenu.style.height = mobileMenu.scrollHeight + 'px';
-                        mobileMenu.classList.add('menu-open');
-
-                        // Icon transition: Burger to X
-                        menuIconOpen.classList.remove('opacity-100');
-                        menuIconOpen.classList.add('opacity-0');
-                        setTimeout(() => {
-                            menuIconOpen.classList.add('absolute');
-                            menuIconClose.classList.remove('absolute');
-                            menuIconClose.classList.remove('opacity-0');
-                            menuIconClose.classList.add('opacity-100');
-                        }, 150);
+                        mobileMenu.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                        mobileMenu.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+                        // Use Lucide to change icon to X
+                        menuIcon.setAttribute('data-lucide', 'x');
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
                     }
                 });
-                
-                // Clean up height when window resizes to desktop view
-                window.addEventListener('resize', () => {
-                    if (window.innerWidth >= 1024) {
-                        mobileMenu.style.height = '0';
-                        mobileMenu.classList.remove('menu-open');
-                        
-                        // Reset icon state if it was open
-                        menuIconOpen.classList.remove('absolute', 'opacity-0');
-                        menuIconClose.classList.add('absolute', 'opacity-0');
-                    }
-                });
+            }
+            
+            // Re-initialize Lucide Icons if needed
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
             }
         });
     </script>

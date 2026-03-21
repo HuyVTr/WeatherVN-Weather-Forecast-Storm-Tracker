@@ -88,9 +88,9 @@ GOTO END_PROMPT
 echo.
 echo      -------------------------------------------------------
 echo.
-echo      >> Cac lenh khoi dong da duoc thuc thi.
+echo      [System] Cac lenh khoi dong da duoc thuc thi.
 echo.
-echo      >> Vui long mo trinh duyet va truy cap dia chi:
+echo      [Link] Vui long mo trinh duyet va truy cap dia chi:
 echo.
 echo         http://127.0.0.1:8000 (neu web server duoc khoi dong)
 echo.

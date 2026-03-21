@@ -28,4 +28,3 @@ project_data/processed_output/*.csv
 # 4. Agent Tools (Dùng lệnh assume-unchanged thay thế để dùng được phím @)
 test_write.txt
 .vscode/
-.agents/
